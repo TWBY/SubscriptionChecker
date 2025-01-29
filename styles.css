@@ -1,0 +1,1026 @@
+body {
+    background-color: #000000;
+    margin: 0;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #ffffff;
+}
+
+.calendar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 300px;
+}
+
+.calendar-header {
+    margin-bottom: 20px;
+}
+
+.header-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: flex-end;
+    width: 100%;
+    gap: 20px;
+    min-height: 120px;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 20px;
+}
+
+/* 左側社群連結容器 */
+.social-links-container {
+    grid-column: 1;
+    justify-self: start;
+    width: 150px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 中間標題容器保持原樣 */
+.title-container {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+    padding-bottom: 0;
+}
+
+/* 新增的包裝容器 */
+.title-wrapper {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    position: relative;
+    width: 100%;
+}
+
+/* 右側每月花費 */
+.monthly-spend {
+    grid-column: 3;
+    text-align: right;
+    color: #888;
+    justify-self: end;
+    font-size: 1.15em;
+    align-self: flex-end;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0;
+}
+
+.monthly-spend-wrapper {
+    margin-top: -85px;
+    position: relative;
+}
+
+.monthly-spend .amount {
+    font-size: 2em;
+    color: #ffffff;
+    margin-top: 2px;
+    text-align: right;
+}
+
+.title {
+    font-size: 3em;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.amount {
+    font-size: 2em; /* 增加金額字體大小 */
+    color: #ffffff;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.month-navigation {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.weekdays div {
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9em;
+    color: #666;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+}
+
+#calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-day {
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 100%;
+    height: 0;
+}
+
+.calendar-day:hover {
+    background-color: #252525;
+}
+
+.calendar-day.other-month {
+    opacity: 0.5;
+}
+
+.day-number {
+    font-size: 1.1em;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.calendar-day.today {
+    background-color: #252525;
+}
+
+/* 修改今日標記樣式 */
+.calendar-day.today::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* 訂閱服務圖示樣式 */
+.subscription-icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.subscription-icon.netflix {
+    background-color: #C62828;
+}
+
+.subscription-icon.spotify {
+    background-color: #1DB954;
+}
+
+.subscription-icon.linkedin {
+    background-color: #0077B5;
+}
+
+.subscription-icon.amazon {
+    background-color: #FF9900;
+}
+
+/* 調整提醒點位置，避免與今日標記重疊 */
+.notification-dot {
+    position: absolute;
+    top: 8px;
+    right: 20px; /* 移到今日標記左側 */
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #1DB954;
+}
+
+@media screen and (max-width: 768px) {
+    .calendar-container {
+        padding: 10px;
+    }
+    
+    .weekdays div {
+        font-size: 0.8em;
+        padding: 5px;
+    }
+    
+    .title {
+        font-size: 2em;
+    }
+    
+    .amount {
+        font-size: 1.5em;
+    }
+
+    .calendar-day {
+        padding: 5px;
+        padding-bottom: 100%;
+    }
+
+    .calendar-day-content {
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+    }
+
+    .day-number {
+        font-size: 0.9em;
+    }
+
+    .subscription-label {
+        font-size: 0.7em;
+        padding: 2px 4px;
+    }
+}
+
+.subscription-form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    overflow: visible;
+    position: relative;
+    z-index: 10000;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.form-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.toggle-form {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.form-content {
+    margin-top: 20px;
+    opacity: 1;
+    height: auto;
+    position: relative;
+    z-index: 10001;
+    overflow: hidden;
+    will-change: height, opacity, margin-top;
+    transform-origin: top; /* 設置變形原點在頂部 */
+}
+
+.subscription-form.collapsed .form-content {
+    height: 0;
+    margin-top: 0;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.subscription-form:not(.collapsed) .form-content {
+    visibility: visible;
+}
+
+.form-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    box-sizing: border-box;
+    z-index: 10002;
+}
+
+.form-group:nth-child(1) {
+    flex: 0.9;
+}
+
+.form-group:nth-child(2) {
+    flex: 0.5;
+}
+
+.form-group:nth-child(3) {
+    flex: 0.5;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.9em;
+    box-sizing: border-box;
+}
+
+#payment-date-container,
+#yearly-date-container {
+    flex: 1;
+}
+
+.form-group:last-child {
+    flex: 0.5;
+}
+
+button#add-subscription {
+    width: 100%;
+    padding: 10px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+button#add-subscription:hover {
+    background-color: #555;
+}
+
+/* 訂閱標籤樣式 */
+.subscription-label {
+    font-size: 0.8em;
+    color: #fff;
+    background-color: #444;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* 訂閱列表樣式 */
+.subscription-list {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    overflow: visible;
+    position: relative;
+    z-index: 1;
+}
+
+.subscription-list h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.subscription-table {
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 100px;
+    gap: 3px;
+    padding: 12px;
+    background-color: #252525;
+    font-weight: bold;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.table-header .col,
+.subscription-item .col {
+    padding: 0 10px;
+    text-align: left;
+}
+
+.subscription-item {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 100px;
+    gap: 3px;
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    align-items: center;
+    color: #fff;
+}
+
+.subscription-item:last-child {
+    border-bottom: none;
+}
+
+.subscription-item:hover {
+    background-color: #252525;
+}
+
+.col {
+    padding: 0 10px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.action-button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.edit-button {
+    background-color: #4a4a4a;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #5a5a5a;
+}
+
+.delete-button {
+    background-color: #c82333;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #bd2130;
+}
+
+/* 付款相關行的樣式 */
+.payment-row {
+    grid-column: span 2;
+    display: flex;
+    gap: 15px;
+}
+
+.payment-row select {
+    flex: 1;
+}
+
+/* 移除數字輸入框的上下按鈕 */
+.form-group input[type="number"]::-webkit-inner-spin-button,
+.form-group input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* 年度日期選擇器的樣式 */
+#yearly-date-container {
+    flex: 1;
+}
+
+.yearly-date-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.yearly-date-row select {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 移除多餘的樣式 */
+#yearly-month,
+#yearly-day {
+    width: auto;
+}
+
+/* 確保年度日期選擇器容器不會被壓縮 */
+#yearly-date-container.form-group {
+    min-width: 0;
+    display: flex;
+}
+
+/* 下拉式選單的基本樣式 */
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #000;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000000'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    cursor: pointer;
+}
+
+/* 下拉式選單選項的樣式 */
+.form-group select option {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #000;
+}
+
+/* 下拉式選單 hover 效果 */
+.form-group select:hover {
+    border-color: #999;
+}
+
+/* 下拉式選單 focus 效果 */
+.form-group select:focus {
+    outline: none;
+    border-color: #666;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 移除原生的下拉箭頭（針對不同瀏覽器） */
+.form-group select::-ms-expand {
+    display: none;
+}
+
+/* 確保下拉選單在深色背景上也能正常顯示 */
+.form-group select option:checked {
+    background-color: #f0f0f0;
+}
+
+/* 調整下拉選單的位置和層級 */
+.form-group {
+    position: relative;
+    z-index: 10002;
+}
+
+/* 當下拉選單展開時的容器樣式 */
+.form-group select:focus + .select-options {
+    display: block;
+    opacity: 1;
+}
+
+/* 自定義下拉選單的基本樣式 */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    z-index: 100;
+}
+
+.custom-dropdown input {
+    width: 100%;
+    padding: 12px;
+    padding-right: 35px; /* 為箭頭圖示留出空間 */
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* 添加箭頭圖示的樣式 */
+.custom-dropdown::after {
+    content: '\f107'; /* Font Awesome 的向下箭頭 unicode */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900; /* 確保使用實心箭頭 */
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    pointer-events: none;
+}
+
+.custom-dropdown.open {
+    z-index: 1000;
+}
+
+.custom-dropdown ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    opacity: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-dropdown ul li {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.custom-dropdown ul li:hover {
+    background-color: #333;
+}
+
+/* 確保下拉選單在其他元素之上 */
+.form-content {
+    overflow: visible !important;
+}
+
+.form-group {
+    position: relative;
+    z-index: auto;
+}
+
+/* 當內容超過三個時，移除 aspect-ratio */
+.calendar-day.expanded {
+    aspect-ratio: unset;
+    min-height: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.calendar-day.expanded .day-number {
+    margin-bottom: 5px;
+}
+
+/* 日期內容容器 */
+.calendar-day-content {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* 訂閱標籤的點狀顯示樣式 */
+.subscription-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #444;
+    border-radius: 50%;
+    margin: 2px;
+}
+
+/* 訂閱點的容器 */
+.subscription-dots {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+/* 添加 tooltip 樣式 */
+.calendar-tooltip {
+    position: absolute;
+    background-color: #333;
+    border-radius: 5px;
+    padding: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    min-width: 200px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.calendar-tooltip-header {
+    font-size: 1em;
+    color: #fff;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #444;
+}
+
+.calendar-tooltip-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+    color: #fff;
+    font-size: 0.9em;
+}
+
+.calendar-tooltip-item .name {
+    margin-right: 12px;
+}
+
+.calendar-tooltip-item .amount {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.calendar-tooltip-total {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    font-weight: bold;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.list-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.toggle-list {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.list-content {
+    margin-top: 20px;
+    opacity: 1;
+    height: auto;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    will-change: height, opacity, margin-top;
+    transform-origin: top; /* 設置變形原點在頂部 */
+}
+
+.subscription-list.collapsed .list-content {
+    height: 0;
+    margin-top: 0;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.nav-button:hover {
+    background-color: #333;
+}
+
+.nav-button i {
+    font-size: 1em;
+}
+
+/* 滾動條樣式 */
+.custom-dropdown ul::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-dropdown ul::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+}
+
+.custom-dropdown ul::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+    border: 2px solid #1a1a1a;
+}
+
+.custom-dropdown ul::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Firefox 的滾動條樣式 */
+.custom-dropdown ul {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #1a1a1a;
+}
+
+/* 手機版提示訊息樣式 */
+.mobile-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.warning-content {
+    padding: 20px;
+    color: #ffffff;
+}
+
+.warning-content i {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.warning-content p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+/* 在手機版顯示警告訊息並隱藏主要內容 */
+@media screen and (max-width: 767px) {
+    .mobile-warning {
+        display: flex;
+    }
+
+    .calendar-container {
+        display: none;
+    }
+}
+
+/* 在平板以上的裝置隱藏警告訊息 */
+@media screen and (min-width: 768px) {
+    .mobile-warning {
+        display: none;
+    }
+
+    .calendar-container {
+        display: block;
+    }
+}
+
+/* 社群連結容器的基本樣式 */
+.social-links-container {
+    grid-column: 1;
+    justify-self: start;
+    width: 150px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 社群連結容器內部排列 */
+.social-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 0;
+    width: 100%;
+}
+
+/* 社群連結列表樣式 */
+.social-links {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    order: -1;
+    width: 100%;
+    justify-content: center;
+}
+
+/* 社群圖標樣式 */
+.social-links a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #888;
+}
+
+.ins-icon {
+    font-size: 1.4em;
+}
+
+.threads-icon {
+    width: 1.4em;
+    height: 1.4em;
+}
+
+.social-icon {
+    width: 1.4em;
+    height: 1.4em;
+}
+
+/* 修改 demo SVG 的樣式 */
+#demo {
+    font-weight: 700;
+    overflow: visible;
+    cursor: pointer; /* 改回指針樣式 */
+    width: 140px;
+    height: 40px;
+    margin: 0;
+}
+
+/* 添加 hover 時的樣式 */
+#demo:hover {
+    cursor: pointer; /* 確保 hover 時也是指針樣式 */
+}
+
+/* 修改連結的樣式 */
+.social-container > a {
+    cursor: pointer; /* 確保連結也是指針樣式 */
+}
+
+.social-container > a:hover {
+    cursor: pointer; /* 確保 hover 時也是指針樣式 */
+}
+
+/* 按鈕初始狀態 */
+#demo rect:first-child {
+    fill: #1a1a1a; /* 深色背景 */
+}
+
+#demo rect:nth-child(2) {
+    stroke: #333;
+    stroke-width: 2;
+}
+
+#demo text {
+    fill: #ccc; /* 初始文字為較淡的灰色 */
+}
+
+/* 箭頭和線條的顏色 */
+#demo polyline,
+#demo line {
+    stroke: #ccc; /* 初始箭頭為較淡的灰色 */
+    stroke-width: 2;
+}
+
+/* GSAP 動畫最終狀態（hover 時） */
+.hover-state #demo rect:first-child {
+    fill: #ffffff; /* hover 時背景變白色 */
+}
+
+.hover-state #demo text {
+    fill: #ffffff; /* hover 時文字變全白 */
+}
+
+.hover-state #demo polyline,
+.hover-state #demo line {
+    stroke: #ffffff; /* hover 時箭頭變全白 */
+}
+
+
